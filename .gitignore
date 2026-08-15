@@ -1,0 +1,16 @@
+# Binaries & build artifacts
+powertui-bin
+powertui
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Go
+*.exe
+*.test
+*.out
