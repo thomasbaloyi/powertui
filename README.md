@@ -1,44 +1,22 @@
 # ⚡ PowerTUI
 
-A real-time terminal user interface (TUI) for monitoring total computer power consumption, individual hardware subsystems, per-process power attribution, and gaming metrics — with integrated **Local Weather Forecasting & Cycling Intelligence**.
-
-Available in both **Go (high-performance native binary)** and **Python**.
+A real-time terminal user interface (TUI) written in **Go** for monitoring total computer power consumption, individual hardware subsystems, per-process power attribution, system data flow, and gaming metrics — with integrated **Local Weather Forecasting & Cycling Intelligence**.
 
 ---
 
 ## 🚀 Quick Start
 
-### Go Version (Recommended - 2.2× Faster, 80% Less RAM)
+### Installation & Build
 ```bash
-# Build the standalone binary
+# Clone the repository
+git clone https://github.com/thomasbaloyi/powertui.git
+cd powertui
+
+# Build the native binary
 go build -o powertui main.go
 
 # Run
 ./powertui
-```
-
-### Python Version
-```bash
-python3 powertui.py
-```
-
----
-
-## 🏎️ Performance & Benchmarks (Python vs Go)
-
-Benchmarked on Linux (`amd64`, 12th Gen Intel Core i5-12400F):
-
-| Metric | Python | Go | Speedup / Advantage |
-|---|---|---|---|
-| **`/proc` Process Scraping** (300+ procs) | `6.81 ms` | **`3.04 ms`** | ⚡ **2.24× Faster** |
-| **Full Hardware Sampling Loop** | `13.38 ms` | **`9.58 ms`** | ⚡ **1.40× Faster** |
-| **Cycling Weather Engine** (3 slots) | `3,647 ns` | **`1,191 ns`** | ⚡ **3.06× Faster** |
-| **Runtime Memory (RSS)** | `~28.6 MB` | **`~4.8 MB`** | 📉 **83% Less RAM** |
-| **Distribution** | Multiple `.py` scripts | **Single static binary** | Zero dependencies |
-
-To run the benchmarks yourself:
-```bash
-python3 compare_benchmarks.py
 ```
 
 ---
@@ -46,9 +24,9 @@ python3 compare_benchmarks.py
 ## ✨ Features
 
 - **🌤️ Local Weather & Cycling Intelligence (Hour-by-Hour & Next Day Morning)**:
-  - **Automatic IP Geolocation & Open-Meteo Integration**: Real-time weather and hourly forecasts with zero API keys required.
+  - **Automatic IP Geolocation & Open-Meteo Integration**: Fetches real-time weather and hourly forecasts without requiring API keys.
   - **🚴 Sound Meteorological Cycling Evaluation**:
-    - **Current Conditions**: Evaluates temperature, apparent feels-like, wind speed, gusts, precipitation, and road grip.
+    - **Current Conditions**: Evaluates temperature, apparent ("feels-like") temperature, wind speed, gusts, precipitation, and road grip.
     - **Next 3 Hours (Hour-by-Hour Prediction)**: Hour-by-hour forecast (`+1h`, `+2h`, `+3h`) with temperature, rain probability, wind/gust speeds, and instant cycling verdicts (`🟢 GOOD`, `🟡 FAIR`, `🔴 POOR`).
     - **Tomorrow Morning Ride Window (5:00 AM – 10:00 AM)**: Evaluates the upcoming morning ride window with an aggregate ride score (0–100) and hourly breakdown (05:00 to 10:00).
     - **Interactive Weather Window (`W` key)**: Full-screen interactive modal with comprehensive meteorological breakdowns and criteria explanation.
@@ -113,10 +91,23 @@ The cycling evaluation engine scores conditions on a scale of **0 to 100** acros
 
 ---
 
+## 🏎️ Performance Benchmarks
+
+Running on Linux (`amd64`, 12th Gen Intel Core i5-12400F):
+
+```bash
+go test -bench=. -benchmem
+```
+
+* **`/proc` Process Scraping**: `~3.0 ms` per full 300+ process scan.
+* **Full Hardware Sampling Loop**: `~8.4 ms` per multi-subsystem sample.
+* **Memory Footprint**: `~4.8 MB` RSS.
+
+---
+
 ## 🛠️ Requirements & Architecture
 
-- **Go 1.20+** or **Python 3.8+**
-- Zero external dependencies for Python; standard `golang.org/x/term` for Go.
+- **Go 1.20+**
 - Hardware sensor sources:
   - Linux `powercap/intel-rapl` (CPU package / cores)
   - Linux `hwmon` / sysfs (AMDGPU power, temperatures, fans)
